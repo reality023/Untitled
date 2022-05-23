@@ -2,20 +2,26 @@ import { faHeart, faPlus, faRightToBracket } from "@fortawesome/free-solid-svg-i
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 
 function Main() {
+    const history = useHistory();
     const list = useSelector((state) => state.post.list);
     return (
         <Container>
             <ButtonGroup>
-                <Button>
-                    <FontAwesomeIcon icon={faPlus} />
-                    <span>글쓰기</span>
-                </Button>
-                <Button>
-                    <FontAwesomeIcon icon={faRightToBracket} />
-                    <span>로그인</span>
-                </Button>
+                <Link to="/write">
+                    <Button>
+                        <FontAwesomeIcon icon={faPlus} />
+                        <span>글쓰기</span>
+                    </Button>
+                </Link>
+                <Link to="/login">
+                    <Button>
+                        <FontAwesomeIcon icon={faRightToBracket} />
+                        <span>로그인</span>
+                    </Button>
+                </Link>
             </ButtonGroup>
             <Box>
                 <Header>
@@ -26,17 +32,19 @@ function Main() {
                         {list.map(((cardData, index) => {
                             return (
                                 <Card key={index}>
-                                    <CardImage src="https://cdn.pixabay.com/photo/2022/04/13/15/40/amman-7130516_960_720.jpg" alt="" />
-                                    <CardContent>
-                                        <CardText>
-                                            <em>{cardData.title}</em>
-                                            <p>{cardData.desc}</p>
-                                        </CardText>
-                                        <CardHeart isActive={cardData.active}>
-                                            <FontAwesomeIcon icon={ faHeart } />
-                                            <span>+ {cardData.like}</span>
-                                        </CardHeart>
-                                    </CardContent>
+                                    <Link to={`/detail/${cardData.id}`}>
+                                        <CardImage src="https://cdn.pixabay.com/photo/2022/04/13/15/40/amman-7130516_960_720.jpg" alt="" />
+                                        <CardContent>
+                                            <CardText>
+                                                <em>{cardData.title}</em>
+                                                <p>{cardData.desc}</p>
+                                            </CardText>
+                                            <CardHeart isActive={cardData.active}>
+                                                <FontAwesomeIcon icon={ faHeart } />
+                                                <span>+ {cardData.like}</span>
+                                            </CardHeart>
+                                        </CardContent>
+                                    </Link>
                                 </Card>
                             );
                         }))}
@@ -51,7 +59,7 @@ const ButtonGroup = styled.div`
     position: fixed;
     bottom: 40px;
     right: 40px;
-    width: 200px;
+    width: 190px;
     display: flex;
     justify-content: space-between;
 `;

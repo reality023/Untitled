@@ -1,6 +1,11 @@
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 function Login() {
+    const history = useHistory();
+    const procLogin = () => {
+        history.push("/");
+    }
     return (
         <Container>
             <Box>
@@ -10,12 +15,14 @@ function Login() {
                     <LoginForm>
                         <input type="text" placeholder="아이디" />
                         <input type="text" placeholder="비밀번호" />
-                        <button>Sign In</button>
+                        <button onClick={procLogin}>Sign In</button>
                     </LoginForm>
-                    <NeedSignUp>
-                        Don’t have any account?
-                        <span>Sign Up</span>
-                    </NeedSignUp>
+                    <Link to="/register">
+                        <NeedSignUp>
+                            Don’t have any account?
+                            <span>Sign Up</span>
+                        </NeedSignUp>
+                    </Link>
                 </LoginBox>
             </Box>
         </Container>
@@ -92,6 +99,7 @@ const LoginBox = styled.div`
             border-radius: 5px;
             font-size: 24px;
             box-shadow: 0px 0px 6px 0px ${props => props.theme.color.blue};
+            cursor: pointer;
         }
     }
 `;
@@ -104,6 +112,7 @@ const NeedSignUp = styled.div`
         margin-left: 10px;
         text-decoration: underline;
         color: #4186C5;
+        cursor: pointer;
     }
 `;
 

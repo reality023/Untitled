@@ -1,3 +1,6 @@
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -87,11 +90,21 @@ const Content = styled.span`
 `;
 const Date = styled.span``;
 
+const Button = styled.div``;
+
 function Detail() {
+  const procRemove = (e) => {
+    
+  }
   return (
     <Container className='Write'>
       <Box>
+        <Link to="/">
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </Link>
         <Name>Detail</Name>
+        <Link to="/write"><Button>수정하기</Button></Link>
+        <Link to="/"><Button onClick={procRemove}>삭제하기</Button></Link>
         <Image></Image>
         <BoardContainer>
           <BoardTitle>게시글 제목</BoardTitle>

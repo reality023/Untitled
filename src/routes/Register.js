@@ -1,23 +1,30 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { Link, useHistory } from 'react-router-dom';
 
 function Register() {
+    const history = useHistory();
+    const procRegister = () => {
+        history.push("/login")
+    }
     return (
         <Container>
             <Box>
                 <Title>Untitled</Title>
                 <LoginBox>
-                    <BackIcon>
-                        <FontAwesomeIcon icon={faArrowLeft} />
-                    </BackIcon>
+                    <Link to="/login">
+                        <BackIcon>
+                            <FontAwesomeIcon icon={faArrowLeft} />
+                        </BackIcon>
+                    </Link>
                     <Subject>REGISTER</Subject>
                     <LoginForm>
                         <input type="text" placeholder="아이디" />
                         <input type="text" placeholder="비밀번호" />
                         <input type="text" placeholder="비밀번호 확인" />
                         <input type="text" placeholder="닉네임" />
-                        <button>Sign Up</button>
+                        <button onClick={procRegister}>Sign Up</button>
                     </LoginForm>
                 </LoginBox>
             </Box>
@@ -61,11 +68,12 @@ const LoginBox = styled.div`
     position: relative;
 
     ${BackIcon} {
-        font-size: 36px;
+        font-size: 24px;
         position: absolute;
         left: 40px;
-        top: 40px;
+        top: 44px;
         color: #444444;
+        cursor: pointer;
     }
 
     ${Subject} {
@@ -105,6 +113,7 @@ const LoginBox = styled.div`
             border-radius: 5px;
             font-size: 24px;
             box-shadow: 0px 0px 6px 0px ${props => props.theme.color.blue};
+            cursor: pointer;
         }
     }
 `;

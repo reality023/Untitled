@@ -1,3 +1,6 @@
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -36,17 +39,25 @@ const Content = styled.input`
 const Submit = styled.button`
   width: 100%;
   height: 50px;
+  cursor: pointer;
 `;
 
 function Write() {
+  const history = useHistory();
+  const procWrite = () => {
+    history.push("/")
+  }
   return (
     <Container className='Write'>
       <Box>
+        <Link to="/">
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </Link>
         <Name>Write</Name>
         <Title type='text' placeholder='제목'></Title>
         <File type='file' />
         <Content type='text' placeholder='내용' />
-        <Submit>작성하기</Submit>
+        <Submit onClick={procWrite}>작성하기</Submit>
       </Box>
     </Container>
   );
