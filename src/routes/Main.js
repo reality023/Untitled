@@ -1,8 +1,10 @@
 import { faHeart, faPlus, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled, { css } from "styled-components";
+import { useSelector } from "react-redux";
 
 function Main() {
+    const list = useSelector((state) => state.post.list);
     return (
         <Container>
             <ButtonGroup>
@@ -21,19 +23,23 @@ function Main() {
                 </Header>
                 <Content>
                     <CardList>
-                        <Card>
-                            <CardImage src="https://cdn.pixabay.com/photo/2022/04/13/15/40/amman-7130516_960_720.jpg" alt="" />
-                            <CardContent>
-                                <CardText>
-                                    <em>제목</em>
-                                    <p>내용</p>
-                                </CardText>
-                                <CardHeart isActive>
-                                    <FontAwesomeIcon icon={ faHeart } />
-                                    <span>+ 1</span>
-                                </CardHeart>
-                            </CardContent>
-                        </Card>
+                        {list.map(((cardData, index) => {
+                            return (
+                                <Card key={index}>
+                                    <CardImage src="https://cdn.pixabay.com/photo/2022/04/13/15/40/amman-7130516_960_720.jpg" alt="" />
+                                    <CardContent>
+                                        <CardText>
+                                            <em>{cardData.title}</em>
+                                            <p>{cardData.desc}</p>
+                                        </CardText>
+                                        <CardHeart isActive={cardData.active}>
+                                            <FontAwesomeIcon icon={ faHeart } />
+                                            <span>+ {cardData.like}</span>
+                                        </CardHeart>
+                                    </CardContent>
+                                </Card>
+                            );
+                        }))}
                     </CardList>
                 </Content>
             </Box>
@@ -61,6 +67,7 @@ const Button = styled.div`
     border-radius: 50%;
     box-shadow: 0px 0px 6px 0px #cccccc;
     color: ${props => props.theme.color.blue};
+    background-color: ${props => props.theme.color.white};
 
     svg path {
         fill: ${props => props.theme.color.blue};
