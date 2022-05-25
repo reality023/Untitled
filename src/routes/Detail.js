@@ -1,7 +1,49 @@
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+
+function Detail() {
+  const allData = useSelector(state => state.post.list);
+  const cardData = useParams();
+  const [data] = allData.filter(v => v.id === parseInt(cardData.id));
+  const procRemove = e => {};
+  return (
+    <Container className='Write'>
+      <Box>
+        <Link to='/'>
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </Link>
+        <Name>Detail</Name>
+        <Link to='/write'>
+          <Button>수정하기</Button>
+        </Link>
+        <Link to='/'>
+          <Button onClick={procRemove}>삭제하기</Button>
+        </Link>
+        <Image src={`${data.image}`}></Image>
+        <BoardContainer>
+          <BoardTitle>{data.title}</BoardTitle>
+          <BoardContent>{data.desc}</BoardContent>
+        </BoardContainer>
+        <Heart>
+          <FontAwesomeIcon icon={faHeart} />
+          <HeartTitle>좋아요 {data.like}개</HeartTitle>
+        </Heart>
+        <InputContainer>
+          <ReplyInput placeholder='댓글을 입력해주세요.'></ReplyInput>
+          <ReplyButton>REPLY</ReplyButton>
+        </InputContainer>
+        <ReplyContainer>
+          <Nickname>공쥬99</Nickname>
+          <Content>너무 예뻐요 ㅎ</Content>
+          <Date>2022-05-22</Date>
+        </ReplyContainer>
+      </Box>
+    </Container>
+  );
+}
 
 const Container = styled.div`
   display: flex;
@@ -23,8 +65,8 @@ const Box = styled.div`
 
 const Image = styled.img`
   width: 100%;
-  height: 200px;
-  background-color: red;
+  height: 300px;
+  border-radius: 10px;
   margin-bottom: 30px;
 `;
 
@@ -49,12 +91,6 @@ const Heart = styled.div`
   margin-bottom: 30px;
 `;
 
-const Icon = styled.div`
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
-  background-color: red;
-`;
 const HeartTitle = styled.span``;
 
 const InputContainer = styled.div`
@@ -91,41 +127,5 @@ const Content = styled.span`
 const Date = styled.span``;
 
 const Button = styled.div``;
-
-function Detail() {
-  const procRemove = (e) => {
-    
-  }
-  return (
-    <Container className='Write'>
-      <Box>
-        <Link to="/">
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </Link>
-        <Name>Detail</Name>
-        <Link to="/write"><Button>수정하기</Button></Link>
-        <Link to="/"><Button onClick={procRemove}>삭제하기</Button></Link>
-        <Image></Image>
-        <BoardContainer>
-          <BoardTitle>게시글 제목</BoardTitle>
-          <BoardContent>게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용</BoardContent>
-        </BoardContainer>
-        <Heart>
-          <Icon></Icon>
-          <HeartTitle>좋아요 2개</HeartTitle>
-        </Heart>
-        <InputContainer>
-          <ReplyInput placeholder='댓글을 입력해주세요.'></ReplyInput>
-          <ReplyButton>REPLY</ReplyButton>
-        </InputContainer>
-        <ReplyContainer>
-          <Nickname>공쥬99</Nickname>
-          <Content>너무 예뻐요 ㅎ</Content>
-          <Date>2022-05-22</Date>
-        </ReplyContainer>
-      </Box>
-    </Container>
-  );
-}
 
 export default Detail;
