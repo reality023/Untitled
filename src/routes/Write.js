@@ -1,16 +1,29 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link, useHistory } from 'react-router-dom';
-import { createPost } from '../redux/modules/post';
-import { useDispatch } from 'react-redux';
-import { useRef } from 'react';
+import { Link, useHistory, useParams } from 'react-router-dom';
+import { createPost, updatePost } from '../redux/modules/post';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 function Write() {
   const dispatch = useDispatch();
+  const params = useParams();
+  const dataList = useSelector((state) => state.post.list);
   const inputTitle = useRef('');
   const inputImage = useRef('');
   const inputDesc = useRef('');
+  let [mode, setMode] = useState("ADD");
+
+  useEffect(() => {
+    if (Object.keys(params).length) {
+      setMode("MODIFY");
+
+      const data = dataList.filter((value) => value.id === parseInt(params.id))[0]; // params가 있을 경우 값을 찾아 0번째 값을 저장
+      inputTitle.current.value = data.title;
+      inputDesc.current.value = data.desc;
+    }
+  }, []);
 
   const history = useHistory();
 
@@ -28,7 +41,11 @@ function Write() {
     // 이미지 확장 체크 정규표현식
     // checkExt(image);
 
-    dispatch(createPost({ title, desc, image }));
+    if (mode === "MODIFY") { // 수정 모드일 경우
+      dispatch(updatePost(parseInt(params.id), {title, desc, image}));
+    } else if (mode === "ADD") {
+      dispatch(createPost({ title, desc, image }));
+    }
 
     history.push('/');
   };

@@ -1,14 +1,19 @@
 import { faArrowLeft, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
+import { deletePost } from '../redux/modules/post';
+
 function Detail() {
+  const dispatch = useDispatch();
   const allData = useSelector(state => state.post.list);
   const cardData = useParams();
   const [data] = allData.filter(v => v.id === parseInt(cardData.id));
-  const procRemove = e => {};
+  const procRemove = (e) => {
+    dispatch(deletePost(Number(cardData.id)));
+  };
   return (
     <Container className='Write'>
       <Box>
@@ -16,7 +21,7 @@ function Detail() {
           <FontAwesomeIcon icon={faArrowLeft} />
         </Link>
         <Name>Detail</Name>
-        <Link to='/write'>
+        <Link to={`/write/${cardData.id}`}>
           <Button>수정하기</Button>
         </Link>
         <Link to='/'>
