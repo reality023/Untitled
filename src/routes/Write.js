@@ -1,6 +1,6 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { createPost, updatePost } from '../redux/modules/post';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
@@ -9,23 +9,23 @@ import styled from 'styled-components';
 function Write() {
   const dispatch = useDispatch();
   const params = useParams();
-  const dataList = useSelector((state) => state.post.list);
+  const dataList = useSelector(state => state.post.list);
   const inputTitle = useRef('');
   const inputImage = useRef('');
   const inputDesc = useRef('');
-  let [mode, setMode] = useState("ADD");
+  let [mode, setMode] = useState('ADD');
 
   useEffect(() => {
     if (Object.keys(params).length) {
-      setMode("MODIFY");
+      setMode('MODIFY');
 
-      const data = dataList.filter((value) => value.id === parseInt(params.id))[0]; // params가 있을 경우 값을 찾아 0번째 값을 저장
+      const data = dataList.filter(value => value.id === parseInt(params.id))[0]; // params가 있을 경우 값을 찾아 0번째 값을 저장
       inputTitle.current.value = data.title;
       inputDesc.current.value = data.desc;
     }
   }, []);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // const checkExt = fileName => {
   //   const IMG_FORMAT = '\\.(bmp|gif|jpg|jpeg|png)$';
@@ -41,13 +41,14 @@ function Write() {
     // 이미지 확장 체크 정규표현식
     // checkExt(image);
 
-    if (mode === "MODIFY") { // 수정 모드일 경우
-      dispatch(updatePost(parseInt(params.id), {title, desc, image}));
-    } else if (mode === "ADD") {
+    if (mode === 'MODIFY') {
+      // 수정 모드일 경우
+      dispatch(updatePost(parseInt(params.id), { title, desc, image }));
+    } else if (mode === 'ADD') {
       dispatch(createPost({ title, desc, image }));
     }
 
-    history.push('/');
+    navigate('/');
   };
 
   return (
