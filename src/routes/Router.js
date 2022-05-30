@@ -10,27 +10,13 @@ function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/login'>
-          <Login></Login>
-        </Route>
-        <Route path='/register'>
-          <Register></Register>
-        </Route>
-        <Route path='/detail/:id'>
-          <Detail></Detail>
-        </Route>
-        <Route path='/write/:id'>
-          <Write></Write>
-        </Route>
-        <Route path='/write'>
-          <Write></Write>
-        </Route>
-        <Route path='/' exact>
-          <Main></Main>
-        </Route>
-        <Route>
-          <NotFound></NotFound>
-        </Route>
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/detail/:id' element={<Detail />} />
+        <Route path='/write/:id' element={<Write />} />
+        <Route path='/write' element={<Write />} />
+        <Route path='/' element={<Main />} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
