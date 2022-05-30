@@ -1,15 +1,15 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { createPost, updatePost } from '../redux/modules/post';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { addPost, modifyPost } from '../redux/store';
 
 function Write() {
   const dispatch = useDispatch();
   const params = useParams();
-  const dataList = useSelector(state => state.post.list);
+  const dataList = useSelector(state => state.list);
   const inputTitle = useRef('');
   const inputImage = useRef('');
   const inputDesc = useRef('');
@@ -43,9 +43,14 @@ function Write() {
 
     if (mode === 'MODIFY') {
       // 수정 모드일 경우
-      dispatch(updatePost(parseInt(params.id), { title, desc, image }));
+      dispatch(modifyPost(
+        {
+          id: parseInt(params.id),
+          post: { title, desc, image }
+        }
+      ));
     } else if (mode === 'ADD') {
-      dispatch(createPost({ title, desc, image }));
+      dispatch(addPost({ title, desc, image }));
     }
 
     navigate('/');

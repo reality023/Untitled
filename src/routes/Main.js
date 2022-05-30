@@ -3,10 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled, { css } from 'styled-components';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function Main() {
   const navigate = useNavigate();
-  const list = useSelector(state => state.post.list);
+  const list = useSelector(state => state.list);
   return (
     <Container>
       <ButtonGroup>

@@ -4,15 +4,15 @@ import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { deletePost } from '../redux/modules/post';
+import { removePost } from '../redux/store';
 
 function Detail() {
   const dispatch = useDispatch();
-  const allData = useSelector(state => state.post.list);
+  const allData = useSelector(state => state.list);
   const cardData = useParams();
   const [data] = allData.filter(v => v.id === parseInt(cardData.id));
   const procRemove = (e) => {
-    dispatch(deletePost(Number(cardData.id)));
+    dispatch(removePost(Number(cardData.id)));
   };
   return (
     <Container className='Write'>
