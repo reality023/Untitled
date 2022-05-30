@@ -3,8 +3,8 @@
 // Actions
 // const LOAD = 'post/LOAD';
 const CREATE = 'post/CREATE';
-// const UPDATE = 'post/UPDATE';
-// const REMOVE = 'post/REMOVE';
+const UPDATE = 'post/UPDATE';
+const DELETE = 'post/DELETE';
 
 const initialState = {
   list: [
@@ -23,10 +23,18 @@ export function createPost(post) {
   return { type: CREATE, post };
 }
 
+export function updatePost(id, post) {
+  return { type: UPDATE, id, post };
+}
+
+export function deletePost(id) {
+  return { type: DELETE, id };
+}
+
 // Reducer
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case 'post/CREATE': {
+    case CREATE: {
       let newId = state.list.length;
       const cardContent = {
         ...action.post,
@@ -38,7 +46,22 @@ export default function reducer(state = initialState, action = {}) {
       const list = [...state.list, cardContent];
       return { list };
     }
-
+    case UPDATE: {
+      console.log(action);
+      return {
+        list: state.list.map((data) => {
+          return data.id === action.id ? {...data, ...action.post, 
+            image: 'https://cdn.pixabay.com/photo/2022/04/13/15/40/amman-7130516_960_720.jpg'} : data;
+        }),
+      };
+    }
+    case DELETE: {
+      return {
+        list: state.list.filter((data) => {
+          return data.id !== action.id
+        }),
+      };
+    }
     default: {
       return state;
     }

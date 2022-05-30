@@ -19,6 +19,9 @@ function Router() {
                 <Route path="/detail/:id">
                     <Detail></Detail>
                 </Route>
+                <Route path="/write/:id">
+                    <Write></Write>
+                </Route>
                 <Route path="/write">
                     <Write></Write>
                 </Route>
