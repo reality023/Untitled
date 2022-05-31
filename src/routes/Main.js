@@ -3,11 +3,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled, { css } from 'styled-components';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { firebase_logout } from '../firebase/firebase';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 function Main() {
   const navigate = useNavigate();
   const list = useSelector(state => state.list);
+  const [loginStatus, setLoginStatus] = useState(false);
+  useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setLoginStatus(true);
+        console.log(user);
+      } else {
+        setLoginStatus(false);
+        firebase_logout();
+        console.log("로그인되어있지않음");
+      }
+    });
+  }, [])
   return (
     <Container>
       <ButtonGroup>
@@ -23,6 +39,10 @@ function Main() {
             <span>로그인</span>
           </Button>
         </Link>
+        <Button onClick={firebase_logout}>
+          <FontAwesomeIcon icon={faRightToBracket} />
+          <span>로그아웃</span>
+        </Button>
       </ButtonGroup>
       <Box>
         <Header>
@@ -60,7 +80,7 @@ const ButtonGroup = styled.div`
   position: fixed;
   bottom: 40px;
   right: 40px;
-  width: 190px;
+  width: 290px;
   display: flex;
   justify-content: space-between;
 `;

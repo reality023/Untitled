@@ -2,31 +2,45 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { firebase_join } from "../firebase/firebase";
 
 function Register() {
   const navigate = useNavigate();
-  const procRegister = () => {
+  const userInfo = {
+    id: useRef(null),
+    pw: useRef(null),
+    chkpw: useRef(null),
+    nick: useRef(null)
+  }
+  const procRegister = (e) => {
+    e.preventDefault();
+    const email = userInfo.id.current.value;
+    const password = userInfo.pw.current.value;
+    
+    const result = firebase_join(email, password);
+    console.log(result);
     navigate('/login');
   };
   return (
     <Container>
       <Box>
         <Title>Untitled</Title>
-        <LoginBox>
+        <RegisterBox>
           <Link to='/login'>
             <BackIcon>
               <FontAwesomeIcon icon={faArrowLeft} />
             </BackIcon>
           </Link>
           <Subject>REGISTER</Subject>
-          <LoginForm>
-            <input type='text' placeholder='아이디' />
-            <input type='text' placeholder='비밀번호' />
-            <input type='text' placeholder='비밀번호 확인' />
-            <input type='text' placeholder='닉네임' />
-            <button onClick={procRegister}>Sign Up</button>
-          </LoginForm>
-        </LoginBox>
+          <RegisterForm onSubmit={procRegister}>
+            <input type='text' placeholder='이메일' ref={userInfo.id} />
+            <input type='text' placeholder='비밀번호' ref={userInfo.pw} />
+            <input type='text' placeholder='비밀번호 확인' ref={userInfo.chkpw} />
+            <input type='text' placeholder='닉네임' ref={userInfo.nick} />
+            <button>Sign Up</button>
+          </RegisterForm>
+        </RegisterBox>
       </Box>
     </Container>
   );
@@ -57,8 +71,8 @@ const Title = styled.div`
 
 const BackIcon = styled.div``;
 const Subject = styled.div``;
-const LoginForm = styled.div``;
-const LoginBox = styled.div`
+const RegisterForm = styled.form``;
+const RegisterBox = styled.div`
   width: 100%;
   height: 580px;
   background-color: #ffffff;
@@ -82,7 +96,7 @@ const LoginBox = styled.div`
     color: #444444;
   }
 
-  ${LoginForm} {
+  ${RegisterForm} {
     display: flex;
     flex-direction: column;
     width: 100%;

@@ -1,10 +1,23 @@
+import { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { firebase_login } from '../firebase/firebase';
 
 function Login() {
   const navigate = useNavigate();
-  const procLogin = () => {
-    navigate('/');
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const procLogin = (e) => {
+    e.preventDefault();
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    firebase_login(email, password).then((result) => {
+      if (result.msg === "SUCCESS") {
+        navigate('/');
+      } else {
+        alert("실패");
+      }
+    });
   };
   return (
     <Container>
@@ -12,10 +25,10 @@ function Login() {
         <Title>Untitled</Title>
         <LoginBox>
           <Subject>LOGIN</Subject>
-          <LoginForm>
-            <input type='text' placeholder='아이디' />
-            <input type='text' placeholder='비밀번호' />
-            <button onClick={procLogin}>Sign In</button>
+          <LoginForm onSubmit={procLogin}>
+            <input type='text' placeholder='이메일' ref={emailRef} />
+            <input type='text' placeholder='비밀번호' ref={passwordRef} />
+            <button>Sign In</button>
           </LoginForm>
           <Link to='/register'>
             <NeedSignUp>
@@ -53,7 +66,7 @@ const Title = styled.div`
 `;
 
 const Subject = styled.div``;
-const LoginForm = styled.div``;
+const LoginForm = styled.form``;
 const LoginBox = styled.div`
   width: 100%;
   height: 470px;

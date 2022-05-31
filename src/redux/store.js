@@ -27,7 +27,6 @@ const post = createSlice({
       return { list };
     },
     modifyPost: (state, action) => {
-      console.log(action);
       return {
         list: state.list.map((data) => {
           return data.id === action.payload.id ? {...data, ...action.payload.post, 
