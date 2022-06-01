@@ -4,11 +4,11 @@ import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { removePost } from '../redux/store';
+import { removePost } from '../redux/modules/post';
 
 function Detail() {
   const dispatch = useDispatch();
-  const allData = useSelector(state => state.list);
+  const allData = useSelector(state => state.post.list);
   const cardData = useParams();
   const [data] = allData.filter(v => v.id === parseInt(cardData.id));
   const procRemove = (e) => {

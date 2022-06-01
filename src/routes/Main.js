@@ -9,7 +9,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 function Main() {
   const navigate = useNavigate();
-  const list = useSelector(state => state.list);
+  const list = useSelector(state => state.post.list);
   const [loginStatus, setLoginStatus] = useState(false);
   useEffect(() => {
     const auth = getAuth();
@@ -23,7 +23,7 @@ function Main() {
         console.log("로그인되어있지않음");
       }
     });
-  }, [])
+  }, []);
   return (
     <Container>
       <ButtonGroup>

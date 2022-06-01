@@ -4,12 +4,12 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { addPost, modifyPost } from '../redux/store';
+import { addPost, modifyPost } from '../redux/modules/post';
 
 function Write() {
   const dispatch = useDispatch();
   const params = useParams();
-  const dataList = useSelector(state => state.list);
+  const dataList = useSelector(state => state.post.list);
   const inputTitle = useRef('');
   const inputImage = useRef('');
   const inputDesc = useRef('');

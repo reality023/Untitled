@@ -3,7 +3,7 @@ import Router from './routes/Router';
 import { defaultTheme } from './styles/theme';
 import common from './styles/common.scss';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+import store from './redux/configStore';
 
 
 function App() {
