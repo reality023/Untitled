@@ -43,12 +43,7 @@ function Write() {
 
     if (mode === 'MODIFY') {
       // 수정 모드일 경우
-      dispatch(modifyPost(
-        {
-          id: parseInt(params.id),
-          post: { title, desc, image }
-        }
-      ));
+      dispatch(modifyPost(parseInt(params.id), { title, desc, image }));
     } else if (mode === 'ADD') {
       dispatch(addPost({ title, desc, image }));
     }
