@@ -1,26 +1,29 @@
 import { faCropSimple, faHeart, faPlus, faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled, { css } from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { firebase_logout } from '../firebase/firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { loadPostFB } from '../redux/modules/post';
 
 function Main() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const list = useSelector(state => state.post.list);
   const [loginStatus, setLoginStatus] = useState(false);
   useEffect(() => {
+    dispatch(loadPostFB());
     const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, user => {
       if (user) {
         setLoginStatus(true);
         console.log(user);
       } else {
         setLoginStatus(false);
         firebase_logout();
-        console.log("로그인되어있지않음");
+        console.log('로그인되어있지않음');
       }
     });
   }, []);
@@ -50,9 +53,9 @@ function Main() {
         </Header>
         <Content>
           <CardList>
-            {list.map((cardData, index) => {
+            {list.map(cardData => {
               return (
-                <Card key={index}>
+                <Card key={cardData.id}>
                   <Link to={`/detail/${cardData.id}`}>
                     <CardImage src='https://cdn.pixabay.com/photo/2022/04/13/15/40/amman-7130516_960_720.jpg' alt='' />
                     <CardContent>
