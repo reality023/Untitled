@@ -1,7 +1,11 @@
-import {createStore, combineReducers} from "redux";
-import post from "./modules/post";
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import post from './modules/post';
 
-const rootReducer = combineReducers({post});
-const store = createStore(rootReducer);
+const middlewares = [thunk];
+
+const enhancer = applyMiddleware(...middlewares);
+const rootReducer = combineReducers({ post });
+const store = createStore(rootReducer, enhancer);
 
 export default store;

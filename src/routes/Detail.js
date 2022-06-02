@@ -10,9 +10,10 @@ function Detail() {
   const dispatch = useDispatch();
   const allData = useSelector(state => state.post.list);
   const cardData = useParams();
-  const [data] = allData.filter(v => v.id === parseInt(cardData.id));
-  const procRemove = (e) => {
-    dispatch(removePost(Number(cardData.id)));
+  const [data] = allData.filter(v => v.id === cardData.id);
+  console.log(data);
+  const procRemove = e => {
+    dispatch(removePost(cardData.id));
   };
   return (
     <Container className='Write'>
@@ -27,7 +28,8 @@ function Detail() {
         <Link to='/'>
           <Button onClick={procRemove}>삭제하기</Button>
         </Link>
-        <Image src={`${data.image}`}></Image>
+        <span>${data.image}</span>
+        {/* <Image src={`${data.image}`}></Image> */}
         <BoardContainer>
           <BoardTitle>{data.title}</BoardTitle>
           <BoardContent>{data.desc}</BoardContent>

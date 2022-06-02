@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { addPost, modifyPost } from '../redux/modules/post';
+import { addPostFB, modifyPost } from '../redux/modules/post';
 
 function Write() {
   const dispatch = useDispatch();
@@ -38,6 +38,7 @@ function Write() {
     const title = inputTitle.current.value;
     const desc = inputDesc.current.value;
     const image = inputImage.current.value;
+
     // 이미지 확장 체크 정규표현식
     // checkExt(image);
 
@@ -45,7 +46,7 @@ function Write() {
       // 수정 모드일 경우
       dispatch(modifyPost(parseInt(params.id), { title, desc, image }));
     } else if (mode === 'ADD') {
-      dispatch(addPost({ title, desc, image }));
+      dispatch(addPostFB({ title, desc, image, like: 0, active: false }));
     }
 
     navigate('/');
