@@ -1,24 +1,28 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { firebase_login } from '../firebase/firebase';
+import { firebase_login, loadAccountFB } from '../redux/modules/account';
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const account = useSelector((state) => state.account);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const procLogin = (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    firebase_login(email, password).then((result) => {
-      if (result.msg === "SUCCESS") {
-        navigate('/');
-      } else {
-        alert("실패");
-      }
-    });
+    firebase_login(email, password);
+    dispatch(loadAccountFB());
   };
+
+  useEffect(() => {
+    if (account.isLogin) {
+      navigate("/");
+    }
+  }, [account.isLogin]);
   return (
     <Container>
       <Box>

@@ -1,51 +1,41 @@
-import { faCropSimple, faHeart, faPlus, faRightToBracket } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faPlus, faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled, { css } from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { firebase_logout } from '../firebase/firebase';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { loadPostFB } from '../redux/modules/post';
+import { firebase_logout } from '../redux/modules/account';
+import CheckLogin from "../routes/CheckLogin";
 
 function Main() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const list = useSelector(state => state.post.list);
-  const [loginStatus, setLoginStatus] = useState(false);
-  useEffect(() => {
-    dispatch(loadPostFB());
-    const auth = getAuth();
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        setLoginStatus(true);
-        console.log(user);
-      } else {
-        setLoginStatus(false);
-        firebase_logout();
-        console.log('로그인되어있지않음');
-      }
-    });
-  }, []);
+  const account = useSelector(state => state.account);
+
   return (
     <Container>
+      <CheckLogin />
       <ButtonGroup>
-        <Link to='/write'>
-          <Button>
-            <FontAwesomeIcon icon={faPlus} />
-            <span>글쓰기</span>
-          </Button>
-        </Link>
-        <Link to='/login'>
-          <Button>
-            <FontAwesomeIcon icon={faRightToBracket} />
-            <span>로그인</span>
-          </Button>
-        </Link>
-        <Button onClick={firebase_logout}>
-          <FontAwesomeIcon icon={faRightToBracket} />
-          <span>로그아웃</span>
-        </Button>
+        {account.isLogin ? 
+          <>
+            <Link to='/write'>
+              <Button>
+                <FontAwesomeIcon icon={faPlus} />
+                <span>글쓰기</span>
+              </Button>
+            </Link>
+            <Button onClick={firebase_logout}>
+              <FontAwesomeIcon icon={faRightToBracket} />
+              <span>로그아웃</span>
+            </Button>
+          </>
+          :
+          <Link to='/login'>
+            <Button>
+              <FontAwesomeIcon icon={faRightToBracket} />
+              <span>로그인</span>
+            </Button>
+          </Link>
+        }
       </ButtonGroup>
       <Box>
         <Header>
@@ -83,7 +73,7 @@ const ButtonGroup = styled.div`
   position: fixed;
   bottom: 40px;
   right: 40px;
-  width: 290px;
+  width: 200px;
   display: flex;
   justify-content: space-between;
 `;

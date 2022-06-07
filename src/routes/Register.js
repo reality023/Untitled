@@ -2,24 +2,55 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
-import { firebase_join } from "../firebase/firebase";
+import { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { createAccountFB } from '../redux/modules/account';
 
 function Register() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const userInfo = {
     id: useRef(null),
     pw: useRef(null),
     chkpw: useRef(null),
     nick: useRef(null)
+  };
+
+  // 이메일 형식 체크 - 구글
+  const isEmail = (asValue) => {
+    var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+    return regExp.test(asValue); // 형식에 맞는 경우 true 리턴
   }
+
+  // 비밀번호 형식 체크 - 구글
+  const isPassword = (asValue) => {
+    var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{6,10}$/; //  6 ~ 10자 영문, 숫자 조합
+    return regExp.test(asValue); // 형식에 맞는 경우 true 리턴
+  }
+
   const procRegister = (e) => {
     e.preventDefault();
     const email = userInfo.id.current.value;
     const password = userInfo.pw.current.value;
+    const confirmPassword = userInfo.chkpw.current.value;
+    const name = userInfo.nick.current.value;
+
+    if (!isEmail(email)) {
+      alert("유효한 이메일 형식이 아닙니다");
+      return;
+    }
+
+    if (!isPassword(password)) {
+      alert("유효한 비밀번호 형식이 아닙니다. 6 ~ 10자리의 영문, 숫자 조합으로 생성해주세요.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert("비밀번호가 일치하지 않습니다");
+      return;
+    }
     
-    const result = firebase_join(email, password);
-    console.log(result);
+    dispatch(createAccountFB(email, password, name));
     navigate('/login');
   };
   return (
