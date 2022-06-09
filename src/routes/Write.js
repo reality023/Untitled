@@ -4,6 +4,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { storage } from '../firebase/firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { addPostFB, modifyPost } from '../redux/modules/post';
 
 function Write() {
@@ -11,8 +13,8 @@ function Write() {
   const params = useParams();
   const dataList = useSelector(state => state.post.list);
   const inputTitle = useRef('');
-  const inputImage = useRef('');
   const inputDesc = useRef('');
+  const [uploadImage, setUploadImage] = useState('');
   let [mode, setMode] = useState('ADD');
 
   useEffect(() => {
@@ -27,6 +29,21 @@ function Write() {
 
   const navigate = useNavigate();
 
+  // 파일 업로드 로직
+  const selectFile = async event => {
+    const imageFile = event.target.files[0];
+    const storageRef = ref(storage, `images/${imageFile.name}`);
+    try {
+      await uploadBytes(storageRef, imageFile);
+      const fileDownloadUrl = await getDownloadURL(storageRef);
+      console.log(fileDownloadUrl);
+      setUploadImage(fileDownloadUrl);
+      // console.log('업로드 정보: ', uploadImage);
+      // console.log('다운로드 정보: ', fileDownloadUrl);
+    } catch (error) {
+      alert('이미지 업로드에 실패하였습니다.');
+    }
+  };
   // const checkExt = fileName => {
   //   const IMG_FORMAT = '\\.(bmp|gif|jpg|jpeg|png)$';
   //   if (new RegExp(IMG_FORMAT, 'i').test(fileName)) return true;
@@ -37,16 +54,13 @@ function Write() {
   const procWrite = () => {
     const title = inputTitle.current.value;
     const desc = inputDesc.current.value;
-    const image = inputImage.current.value;
-
     // 이미지 확장 체크 정규표현식
     // checkExt(image);
-
     if (mode === 'MODIFY') {
       // 수정 모드일 경우
-      dispatch(modifyPost(parseInt(params.id), { title, desc, image }));
+      // dispatch(modifyPost(parseInt(params.id), { title, desc, image: uploadImage }));
     } else if (mode === 'ADD') {
-      dispatch(addPostFB({ title, desc, image, like: 0, active: false }));
+      dispatch(addPostFB({ title, desc, image: uploadImage, like: 0, active: false }));
     }
 
     navigate('/');
@@ -60,7 +74,10 @@ function Write() {
         </Link>
         <Name>Write</Name>
         <Title ref={inputTitle} type='text' placeholder='제목'></Title>
-        <File ref={inputImage} type='file' />
+        <File type='file' onChange={selectFile} />
+        <Card>
+          <CardImage src={uploadImage} alt='' />
+        </Card>
         <Content ref={inputDesc} type='text' placeholder='내용' />
         <Submit onClick={procWrite}>작성하기</Submit>
       </Box>
@@ -89,6 +106,15 @@ const Box = styled.div`
 const Title = styled.input`
   width: 100%;
   height: 50px;
+`;
+
+const CardImage = styled.img``;
+const Card = styled.div`
+  width: 100%;
+  ${CardImage} {
+    border-radius: 10px;
+    width: inherit;
+  }
 `;
 
 const File = styled.input`
