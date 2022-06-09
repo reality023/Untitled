@@ -28,8 +28,9 @@ function Detail() {
         <Link to='/'>
           <Button onClick={procRemove}>삭제하기</Button>
         </Link>
-        <span>${data.image}</span>
-        {/* <Image src={`${data.image}`}></Image> */}
+        <Card>
+          <CardImage src={`${data.image}`}></CardImage>
+        </Card>
         <BoardContainer>
           <BoardTitle>{data.title}</BoardTitle>
           <BoardContent>{data.desc}</BoardContent>
@@ -70,11 +71,13 @@ const Box = styled.div`
   align-items: center;
 `;
 
-const Image = styled.img`
+const CardImage = styled.img``;
+const Card = styled.div`
   width: 100%;
-  height: 300px;
-  border-radius: 10px;
-  margin-bottom: 30px;
+  ${CardImage} {
+    border-radius: 10px;
+    width: inherit;
+  }
 `;
 
 const BoardContainer = styled.div`

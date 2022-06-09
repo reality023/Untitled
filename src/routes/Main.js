@@ -4,9 +4,9 @@ import styled, { css } from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { firebase_logout } from '../redux/modules/account';
-import CheckLogin from "../routes/CheckLogin";
+import CheckLogin from '../routes/CheckLogin';
 import { useEffect } from 'react';
-import { loadPostFB } from "../redux/modules/post"
+import { loadPostFB } from '../redux/modules/post';
 
 function Main() {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ function Main() {
     <Container>
       <CheckLogin />
       <ButtonGroup>
-        {account.isLogin ? 
+        {account.isLogin ? (
           <>
             <Link to='/write'>
               <Button>
@@ -34,14 +34,14 @@ function Main() {
               <span>로그아웃</span>
             </Button>
           </>
-          :
+        ) : (
           <Link to='/login'>
             <Button>
               <FontAwesomeIcon icon={faRightToBracket} />
               <span>로그인</span>
             </Button>
           </Link>
-        }
+        )}
       </ButtonGroup>
       <Box>
         <Header>
@@ -53,7 +53,7 @@ function Main() {
               return (
                 <Card key={cardData.id}>
                   <Link to={`/detail/${cardData.id}`}>
-                    <CardImage src='https://cdn.pixabay.com/photo/2022/04/13/15/40/amman-7130516_960_720.jpg' alt='' />
+                    <CardImage src={cardData.image} alt='' />
                     <CardContent>
                       <CardText>
                         <em>{cardData.title}</em>
