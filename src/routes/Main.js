@@ -5,11 +5,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { firebase_logout } from '../redux/modules/account';
 import CheckLogin from "../routes/CheckLogin";
+import { useEffect } from 'react';
+import { loadPostFB } from "../redux/modules/post"
 
 function Main() {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const list = useSelector(state => state.post.list);
   const account = useSelector(state => state.account);
+
+  useEffect(() => {
+    dispatch(loadPostFB());
+  }, []);
 
   return (
     <Container>
