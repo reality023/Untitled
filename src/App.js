@@ -7,8 +7,6 @@ import store from './redux/configStore';
 
 
 function App() {
-  // 나중에 여러 테마 적용할 때 아래 코드 사용
-  // const [theme, setTheme] = useState(defaultTheme);
   const theme = defaultTheme;
   return (
     <Provider store={store}>
